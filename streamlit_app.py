@@ -809,7 +809,10 @@ elif page == "🌀 t-SNE Visualization":
         with st.spinner(f"Running t-SNE on {max_rows} rows... (may take ~30 seconds)"):
             pca_pre = PCA(n_components=min(50, X_sub.shape[1]), random_state=42)
             X_pre = pca_pre.fit_transform(X_sub)
-            tsne = TSNE(n_components=2, perplexity=perplexity, random_state=42, n_iter=500)
+            try:
+                tsne = TSNE(n_components=2, perplexity=perplexity, random_state=42, max_iter=500)
+            except TypeError:
+                tsne = TSNE(n_components=2, perplexity=perplexity, random_state=42, n_iter=500)
             X_2d = tsne.fit_transform(X_pre)
         
         tsne_df = pd.DataFrame(X_2d, columns=["Dim1", "Dim2"])
